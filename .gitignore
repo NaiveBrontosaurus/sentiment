@@ -1,0 +1,10 @@
+#OSX
+.ds_store
+
+#training data
+trainingandtestdata/
+pos_tweets.csv
+neg_tweets.csv
+
+#Stanford paper
+Distant Supervision Tweet Sentiment.pdf
