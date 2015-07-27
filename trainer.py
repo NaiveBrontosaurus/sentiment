@@ -14,8 +14,13 @@ for row in csv_f:
   else:
     pos_tweets.append((row[5], 'positive'))
 
+import random
+pos_tweets_filtered = random.sample(pos_tweets, 2000)
+neg_tweets_filtered = random.sample(neg_tweets, 2000)
+
+
 tweets = []
-for (words, sentiment) in pos_tweets + neg_tweets:
+for (words, sentiment) in pos_tweets_filtered + neg_tweets_filtered:
   words_filtered = [e.lower() for e in words.split() if len(e) >= 3]
   tweets.append((words_filtered, sentiment))
 
@@ -39,11 +44,21 @@ def extract_features(document):
 
 word_features = get_word_features(get_words_in_tweets(tweets))
 
-training_set = nltk.classify.apply_features(extract_features, tweets)
+cutoff = len(tweets)*3/4
 
-classifier = nltk.NaiveBayesClassifier.train(training_set)
+training_set = nltk.classify.apply_features(extract_features, tweets[:cutoff])
+test_set = nltk.classify.apply_features(extract_features,tweets[cutoff:])
+
+classifier = NaiveBayesClassifier.train(training_set)
+
+#serialize object to be used for REST server
+import pickle
+f = open('classifier.pickle', 'wb');
+pickle.dump(classifier, f)
+f.close()
+
+print 'accuracy:', nltk.classify.util.accuracy(classifier, test_set)
 classifier.show_most_informative_features()
-# cutoff = len(tweets)*3/4
 
 # trainFeats = tweets[:cutoff]
 # testFeats = tweets[cutoff:]
