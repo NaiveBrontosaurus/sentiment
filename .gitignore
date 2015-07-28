@@ -14,3 +14,6 @@ Distant Supervision Tweet Sentiment.pdf
 
 #virtualenv
 venv/
+
+#serialized objects
+.pickle
