@@ -49,7 +49,9 @@ cutoff = len(tweets)*3/4
 training_set = nltk.classify.apply_features(extract_features, tweets[:cutoff])
 test_set = nltk.classify.apply_features(extract_features,tweets[cutoff:])
 
+#train classifier
 classifier = NaiveBayesClassifier.train(training_set)
+print 'train on %d instances, test on %d instances' % (len(training_set), len(test_set))
 
 #serialize object to be used for REST server
 import pickle
@@ -59,10 +61,3 @@ f.close()
 
 print 'accuracy:', nltk.classify.util.accuracy(classifier, test_set)
 classifier.show_most_informative_features()
-
-# trainFeats = tweets[:cutoff]
-# testFeats = tweets[cutoff:]
-# print 'train on %d instances, test on %d instances' % (len(trainFeats), len(testFeats))
-# classifier = NaiveBayesClassifier.train(trainFeats)
-# print 'accuracy:', nltk.classify.util.accuracy(classifier, testFeats)
-# classifier.show_most_informative_features()
