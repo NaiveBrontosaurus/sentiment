@@ -17,8 +17,8 @@ for row in csv_f:
     pos_tweets.append((row[5], 'positive'))
 
 
-pos_tweets_filtered = random.sample(pos_tweets, 1000)
-neg_tweets_filtered = random.sample(neg_tweets, 1000)
+pos_tweets_filtered = random.sample(pos_tweets, 100)
+neg_tweets_filtered = random.sample(neg_tweets, 100)
 
 
 tweets = []
@@ -66,4 +66,4 @@ pickle.dump(classifier, f)
 f.close()
 
 print 'accuracy:', nltk.classify.util.accuracy(classifier, test_set)
-classifier.show_most_informative_features()
+classifier.show_most_informative_features(50)

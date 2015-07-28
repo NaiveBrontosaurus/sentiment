@@ -7,6 +7,7 @@ pos_tweets.csv
 neg_tweets.csv
 output.txt
 sanders-twitter-0.2/
+twitter-sentiment-dataset/
 
 #Stanford paper
 Distant Supervision Tweet Sentiment.pdf
