@@ -1,6 +1,8 @@
 import nltk.classify.util
 from nltk.classify import NaiveBayesClassifier
 import csv
+import random
+import pickle
 
 #Assume pos_tweets and neg_tweets are data sets that exist
 pos_tweets = []
@@ -14,9 +16,9 @@ for row in csv_f:
   else:
     pos_tweets.append((row[5], 'positive'))
 
-import random
-pos_tweets_filtered = random.sample(pos_tweets, 2000)
-neg_tweets_filtered = random.sample(neg_tweets, 2000)
+
+pos_tweets_filtered = random.sample(pos_tweets, 1000)
+neg_tweets_filtered = random.sample(neg_tweets, 1000)
 
 
 tweets = []
@@ -44,6 +46,11 @@ def extract_features(document):
 
 word_features = get_word_features(get_words_in_tweets(tweets))
 
+#serialize word_features to be used for REST server
+f = open('word_features.pickle', 'wb')
+pickle.dump(word_features, f)
+f.close()
+
 cutoff = len(tweets)*3/4
 
 training_set = nltk.classify.apply_features(extract_features, tweets[:cutoff])
@@ -53,9 +60,8 @@ test_set = nltk.classify.apply_features(extract_features,tweets[cutoff:])
 classifier = NaiveBayesClassifier.train(training_set)
 print 'train on %d instances, test on %d instances' % (len(training_set), len(test_set))
 
-#serialize object to be used for REST server
-import pickle
-f = open('classifier.pickle', 'wb');
+#serialize classifier to be used for REST server
+f = open('classifier.pickle', 'wb')
 pickle.dump(classifier, f)
 f.close()
 
